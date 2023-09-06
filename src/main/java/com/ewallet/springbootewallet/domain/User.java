@@ -1,6 +1,6 @@
 package com.ewallet.springbootewallet.domain;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Table(name = "user")
 @Entity
@@ -12,8 +12,6 @@ public class User {
     private String uname;
 
     private String password;
-
-    private double balance;
 
     public long getUid() {
         return uid;
@@ -37,14 +35,5 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    //FIXME: security issue
-    public double getBalance() {
-        return balance;
-    }
-
-    public void setBalance(double balance) {
-        this.balance = balance;
     }
 }

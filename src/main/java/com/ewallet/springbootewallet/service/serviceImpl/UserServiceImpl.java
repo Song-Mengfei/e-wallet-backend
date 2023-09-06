@@ -3,8 +3,9 @@ package com.ewallet.springbootewallet.service.serviceImpl;
 import com.ewallet.springbootewallet.domain.User;
 import com.ewallet.springbootewallet.repository.UserDao;
 import com.ewallet.springbootewallet.service.UserService;
-import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 @Service
 public class UserServiceImpl implements UserService {

@@ -17,7 +17,4 @@ public interface UserService {
      * @return
      */
     User registerService(User user);
-
-    //TODO
-//    User updateService(User user);
 }
