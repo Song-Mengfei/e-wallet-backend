@@ -1,6 +1,5 @@
 package com.ewallet.springbootewallet.domain;
 
-
 import javax.persistence.*;
 
 @Table(name = "user")
