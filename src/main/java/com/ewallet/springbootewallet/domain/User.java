@@ -15,7 +15,7 @@ public class User {
 
     private String password;
 
-    private BigDecimal balance;
+    private Double balance;
 
     public long getUid() {
         return uid;
@@ -42,11 +42,11 @@ public class User {
     }
 
     //FIXME: security issue
-    public BigDecimal getBalance() {
+    public Double getBalance() {
         return balance;
     }
 
-    public void setBalance(BigDecimal balance) {
+    public void setBalance(Double balance) {
         this.balance = balance;
     }
 }

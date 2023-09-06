@@ -1,5 +1,6 @@
 package com.ewallet.springbootewallet.service;
 
+import com.ewallet.springbootewallet.domain.Transaction;
 import com.ewallet.springbootewallet.domain.User;
 
 public interface UserService {
@@ -18,6 +19,10 @@ public interface UserService {
      */
     User registerService(User user);
 
-    //TODO
-//    User updateService(User user);
+    Integer transferOutService(String uname, Double amount);
+
+    Integer receiveService(String uname, Double amount);
+
+    Transaction transferToOneService(String uname, String receiverUname, Double amount);
+
 }
