@@ -1,8 +1,9 @@
 package com.ewallet.springbootewallet.domain;
 
-import lombok.*;
-import jakarta.persistence.*;
-import java.math.BigDecimal;
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
 
 @Getter
 @Setter
