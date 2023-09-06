@@ -15,7 +15,7 @@ public class Transaction {
     private long fromAccountId;
     private long toAccountId;
     private String type;
-    private BigDecimal amount;
+    private double amount;
     private String remark;
     private String status;
     private String time;
