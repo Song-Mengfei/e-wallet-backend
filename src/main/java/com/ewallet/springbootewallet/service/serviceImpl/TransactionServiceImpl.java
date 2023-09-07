@@ -14,12 +14,6 @@ public class TransactionServiceImpl implements TransactionService {
     private TransactionDao transactionDao;
 
     @Override
-    public Boolean transactService(Transaction transaction) {
-        //TODO
-        return true;
-    }
-
-    @Override
     public List<Transaction> findByFromAccountIdService(Long fromAccountId) {
         List<Transaction> transactionsOut = transactionDao.findByFromAccountId(fromAccountId);
         return transactionsOut;

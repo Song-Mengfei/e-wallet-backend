@@ -10,9 +10,9 @@ public interface AccountService {
 
     Account findAccountByAidService(Long aid);
 
-    Integer transferOutService(Long uid, String password, Double amount);
+    Integer transferOutService(Long uid, String password, Double amount) throws Exception;
 
-    Integer receiveService(Long uid, Double amount);
+    Integer receiveService(Long uid, Double amount) throws Exception;
 
     Transaction transferToOneService(Long aid, Long receiverAid, String password, Double amount);
 }

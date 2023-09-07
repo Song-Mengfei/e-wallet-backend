@@ -18,6 +18,11 @@ public interface AccountDao extends JpaRepository<Account, Long> {
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE account SET balance=:balance WHERE uid=:uid AND aid=:aid", nativeQuery = true)
-    Integer updateBalance(@Param("uid") Long uid, @Param("aid") Long aid, @Param("balance") Double balance);
+    @Query(value = "UPDATE account SET balance=:balance WHERE aid=:aid", nativeQuery = true)
+    Integer updateBalance(@Param("aid") Long aid, @Param("balance") Double balance);
+
+//    @Transactional
+//    @Modifying
+//    @Query(value = "UPDATE account SET balance=:balance WHERE uid=:uid AND aid=:aid", nativeQuery = true)
+//    Integer updateBalance(@Param("uid") Long uid, @Param("aid") Long aid, @Param("balance") Double balance);
 }

@@ -30,7 +30,7 @@ public class AccountController {
     }
 
     @PostMapping("/topup")
-    public Result<Transaction> topUpController(@RequestParam Long aid,@RequestParam String accountPassword ,@RequestParam Double amount) {
+    public Result<Transaction> topUpController(@RequestParam Long aid, @RequestParam String accountPassword ,@RequestParam Double amount) {
         Transaction transactionRecord = accountService.transferToOneService(aid, aid, accountPassword, amount);
         return Result.success(transactionRecord, "money top-up success");
 //        if (user != null) {
