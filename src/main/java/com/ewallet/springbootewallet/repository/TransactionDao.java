@@ -12,8 +12,6 @@ public interface TransactionDao extends JpaRepository<Transaction, Long> {
 
     List<Transaction> findByToAccountId(Long toAccountId);
 
-    //TODO: check
-
     // List<Transaction> findByFromAccountIdOrderByTime(long id);
     // List<Transaction> findByToAccountIdOrderByTime(long id);
 }

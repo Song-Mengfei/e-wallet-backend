@@ -1,5 +1,8 @@
 package com.ewallet.springbootewallet.service.serviceImpl;
 
+import com.ewallet.springbootewallet.Exceptions.AccountNotFoundException;
+import com.ewallet.springbootewallet.Exceptions.InsufficientAuthenticationException;
+import com.ewallet.springbootewallet.Exceptions.TransactionBadRequest;
 import com.ewallet.springbootewallet.domain.Account;
 import com.ewallet.springbootewallet.domain.Transaction;
 import com.ewallet.springbootewallet.repository.AccountDao;
@@ -8,6 +11,8 @@ import com.ewallet.springbootewallet.service.AccountService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.transaction.Transactional;
+import java.time.LocalTime;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -19,7 +24,10 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account createAccountService(Account account) {
-        // FIXME: ADD check if account already exist.
+        Account existedAccount = findAccountByUidService(account.getUid());
+        if (existedAccount != null) {
+            return null;
+        }
         Account newAccount = accountDao.save(account);
         if (newAccount != null) {
             account.setAccountPassword("");
@@ -37,56 +45,61 @@ public class AccountServiceImpl implements AccountService {
         return null;
     }
 
+    @Transactional
     @Override
-    public Integer transferOutService(Long aid, String accountPassword, Double amount) {
-        // FIXME: Change return null to throw exception.
+    public Integer transferOutService(Long aid, String accountPassword, Double amount) throws Exception{
         Account account = accountDao.findAccountByAid(aid);
         if (account == null) {
-            return null;
+            throw new AccountNotFoundException(aid);
         }
         Double currentBalance = account.getBalance();
+        //TODO: also add in frontend validation
         if (amount < 0) {
-            return null;
+            throw new TransactionBadRequest();
         }
         if (!account.getAccountPassword().equals(accountPassword)) {
             // password not right
-            return null;
+            throw new InsufficientAuthenticationException();
         }
         if (amount <= currentBalance) {
             // sufficient balance in account, can proceed
             Double newBalance = currentBalance - amount;
-            Integer status = accountDao.updateBalance(aid, account.getAid(), newBalance);
+            Integer status = accountDao.updateBalance(aid, newBalance);
             return status;
         } else {
-            return null;
+            throw new TransactionBadRequest();
         }
     }
 
     @Override
-    public Integer receiveService(Long aid, Double amount) {
+    public Integer receiveService(Long aid, Double amount) throws Exception{
         Account account = accountDao.findAccountByAid(aid);
         if (account == null) {
-            return null;
+            throw new AccountNotFoundException(aid);
         }
         Double newBalance = account.getBalance() + amount;
-        Integer status =accountDao.updateBalance(aid, account.getAid(), newBalance);
+        Integer status =accountDao.updateBalance(aid, newBalance);
         return status;
     }
 
+    @Transactional
     @Override
     public Transaction transferToOneService(Long aid, Long receiverAid, String password, Double amount) {
-        // FIXME: Need to check if aid not equal to receiverAid, if equal, through error.
-        // FIXME: Check if aid/receiverAid already in database, if not, through error.
-        if (aid.equals(receiverAid)) {
+        try {
+            if (aid.equals(receiverAid)) {
             // perform top-up
-            receiveService(receiverAid, amount);
-        } else {
+                receiveService(receiverAid, amount);
+            } else {
             // perform transaction
-            transferOutService(aid, password, amount);
-            receiveService(receiverAid, amount);
+                transferOutService(aid, password, amount);
+                receiveService(receiverAid, amount);
+            }
+            // Add transaction history
+            Transaction transaction = Transaction.build(aid, receiverAid, "", amount, "", "", LocalTime.now().toString() );
+            return transaction;
         }
-        // Add transaction history
-        Transaction transaction = Transaction.build(aid, receiverAid, "", amount, "", "", "");
-        return transaction;
+        catch (Exception e){
+            return null;
+        }
     }
 }

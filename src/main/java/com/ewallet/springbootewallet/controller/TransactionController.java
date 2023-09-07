@@ -13,15 +13,15 @@ import java.util.List;
 public class TransactionController {
     @Resource
     private TransactionService transactionService;
-    @PostMapping("/transact")
-    public Result<Transaction> TransactController(@RequestBody Transaction newTransaction) {
-        Boolean success = transactionService.transactService(newTransaction);
-        if (success) {
-            return Result.success(newTransaction, "Transaction success");
-        } else {
-            return Result.error("3", "Transaction failed");
-        }
-    }
+//    @PostMapping("/transact")
+//    public Result<Transaction> TransactController(@RequestBody Transaction newTransaction) {
+//        Boolean success = transactionService.transactService(newTransaction);
+//        if (success) {
+//            return Result.success(newTransaction, "Transaction success");
+//        } else {
+//            return Result.error("3", "Transaction failed");
+//        }
+//    }
 
     @PostMapping("/findTransactionByFromId")
     public Result<List<Transaction>> findTransactionByFromIdController(@RequestParam Long fromAccountId) {
