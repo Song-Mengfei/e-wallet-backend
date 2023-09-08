@@ -1,12 +1,12 @@
 package com.ewallet.springbootewallet.controller;
 
+
 import com.ewallet.springbootewallet.domain.User;
 import com.ewallet.springbootewallet.service.TransactionService;
 import com.ewallet.springbootewallet.service.UserService;
 import com.ewallet.springbootewallet.utils.Result;
+import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.Resource;
 
 @RestController
 @RequestMapping("/user")

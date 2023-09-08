@@ -1,6 +1,7 @@
 package com.ewallet.springbootewallet.domain;
 
-import javax.persistence.*;
+
+import jakarta.persistence.*;
 
 @Table(name = "user")
 @Entity

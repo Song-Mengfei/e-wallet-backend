@@ -1,12 +1,12 @@
 package com.ewallet.springbootewallet.repository;
 
+
 import com.ewallet.springbootewallet.domain.Account;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-
-import javax.transaction.Transactional;
 
 public interface AccountDao extends JpaRepository<Account, Long> {
 

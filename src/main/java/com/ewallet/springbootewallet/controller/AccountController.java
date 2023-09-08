@@ -1,13 +1,18 @@
 package com.ewallet.springbootewallet.controller;
 
+
+import com.ewallet.springbootewallet.Exceptions.AccountNotFoundException;
+import com.ewallet.springbootewallet.Exceptions.InsufficientAuthenticationException;
+import com.ewallet.springbootewallet.Exceptions.TransactionBadRequest;
 import com.ewallet.springbootewallet.domain.Account;
 import com.ewallet.springbootewallet.domain.Transaction;
 import com.ewallet.springbootewallet.service.AccountService;
 import com.ewallet.springbootewallet.service.TransactionService;
 import com.ewallet.springbootewallet.utils.Result;
+import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
+
 
 @RestController
 @RequestMapping("/account")
@@ -18,6 +23,16 @@ public class AccountController {
 
     @Resource
     private TransactionService transactionService;
+
+    @PostMapping("/findAccountByAid")
+    public Result<Account> findAccountByAidController(@RequestParam long aid) {
+        Account newAccount = accountService.findAccountByAidService(aid);
+        if (newAccount != null) {
+            return Result.success(newAccount, "find account success");
+        } else {
+            return Result.error("1", "Account not exist");
+        }
+    }
 
     @PostMapping("/createAccount")
     public Result<Account> createAccount(@RequestBody Account account) {
@@ -31,8 +46,18 @@ public class AccountController {
 
     @PostMapping("/topup")
     public Result<Transaction> topUpController(@RequestParam Long aid, @RequestParam String accountPassword ,@RequestParam Double amount) {
-        Transaction transactionRecord = accountService.transferToOneService(aid, aid, accountPassword, amount);
-        return Result.success(transactionRecord, "money top-up success");
+        try {
+            Transaction transactionRecord = accountService.transferToOneService(aid, aid, accountPassword, amount);
+            // save transactionRecord to database
+            transactionService.addOneTransactionService(transactionRecord);
+            return Result.success(transactionRecord, "money top-up success");
+        } catch (InsufficientAuthenticationException e) {
+            return Result.error("1", "Incorrect password");
+        } catch (AccountNotFoundException e) {
+            return Result.error("2", "Account not found");
+        } catch (TransactionBadRequest e) {
+            return Result.error("3", "transaction bad request");
+        }
 //        if (user != null) {
 //            return Result.success(user, "top up success");
 //        } else {
